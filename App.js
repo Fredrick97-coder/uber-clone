@@ -15,7 +15,11 @@ export default function App() {
     <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
             <Stack.Screen
               name="Home"
               component={Home}

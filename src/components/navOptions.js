@@ -10,6 +10,8 @@ import React from 'react';
 import tw from 'twrnc';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import { selectOrigin } from '../slices/navSlice';
+import { useSelector } from 'react-redux';
 
 const data = [
   {
@@ -27,6 +29,7 @@ const data = [
 ];
 
 const NavOptions = () => {
+  const origin = useSelector(selectOrigin);
   const navigation = useNavigation();
 
   return (
@@ -39,9 +42,15 @@ const NavOptions = () => {
           <TouchableOpacity
             style={tw`p-5 pb-10 `}
             onPress={() => navigation.navigate(item.screen)}
+            disabled={!origin}
           >
             <View
-              style={tw`flex justify-center items-center rounded-2 bg-gray-200 p-5 shadow-md`}
+              style={[
+                tw`flex justify-center items-center rounded-2 bg-gray-200 p-5 shadow-md`,
+                {
+                  opacity: origin ? 1 : 0.4,
+                },
+              ]}
             >
               <Image
                 style={{

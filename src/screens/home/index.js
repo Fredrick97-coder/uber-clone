@@ -4,8 +4,11 @@ import NavOptions from '../../components/navOptions';
 import tw from 'twrnc';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { GOOGLE_MAPS_APIKEY } from '@env';
+import { useDispatch } from 'react-redux';
+import { setOrigin, setDestination } from '../../slices/navSlice';
 
 const Home = () => {
+  const dispatch = useDispatch();
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <View style={tw`p-5`}>
@@ -17,13 +20,25 @@ const Home = () => {
         />
       </View>
       <GooglePlacesAutocomplete
-        placeholder="Where from?"
+        placeholder="Where From?"
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
-        // minLength={2}
+        minLength={2}
+        enablePoweredByContainer={false}
         query={{
           key: GOOGLE_MAPS_APIKEY,
           language: 'en',
+        }}
+        fetchDetails={true}
+        onPress={(data, details = null) => {
+          dispatch(
+            setOrigin({
+              location: details.geometry.location,
+              destination: data.description,
+            })
+          );
+
+          dispatch(setDestination(null));
         }}
         styles={{
           container: {
